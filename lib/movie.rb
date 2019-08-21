@@ -3,11 +3,12 @@ class Movie < ActiveRecord::Base
     has_many :actors, through: :roles
     
     def movie_actors 
-        # all actors belong this movie 
+        # all actors belong to this movie 
         self.actors.each{|actor| puts "Actor name: #{actor.name} , Actor age: #{actor.age}."}
     end
     
     def movie_roles
+        # all roles belong to this movie
         self.roles.each{|role| puts "Role: #{role.name}"}
     end
     #specific query 

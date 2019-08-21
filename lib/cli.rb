@@ -40,8 +40,7 @@ class CommandLineInterface
         input = gets.chomp
     end
     
-
-
+    ################# Search #################
     def search
         puts 'Search Options
         1 Search by Title
@@ -95,7 +94,7 @@ class CommandLineInterface
     def find_by_title(movie_title)
         current_movie = Movie.find_movie(movie_title)
         if current_movie    # if exist
-            puts current_movie.title # puts movie title
+            puts "Movie Title #{current_movie.title} , Genre: #{current_movie.genre} , Director: #{current_movie.director}." # puts movie title
             current_movie.movie_actors # puts movie actors from movie_actors class method
         else
             puts "Invalid input"
@@ -105,8 +104,10 @@ class CommandLineInterface
     
     
     def find_by_actor(actor_name)
-        if Actor.find_actor(actor_name)
-            Actor.find_actor(actor_name).movies.each{|movie| puts "Title: #{movie.title} , Director: #{movie.director}" }
+        current_actor = Actor.find_actor(actor_name)
+        if current_actor
+            puts "Actor name #{current_actor.name} , Actor age: #{current_actor.age}." 
+            current_actor.actor_movies
         else
             puts "Invalid input"
         end
@@ -150,7 +151,7 @@ class CommandLineInterface
         puts "Thankyou, goodbye!"
     end
 
-    # details
+    ################# details #################
     def show_movie_details(movies)
         # take array as argument
         movies.each{|movie| puts "Title: #{movie.title}, Directors: #{movie.director} Genre: #{movie.genre}." }
@@ -162,7 +163,7 @@ class CommandLineInterface
         
     end
 
-    # Edit 
+    ################# Edit Movies ################# 
     def edit
         # 1 movie 2 actor 3 role
         puts "select the apropriate number
@@ -173,16 +174,20 @@ class CommandLineInterface
         case input.to_i
         when 1 
             add_movie
+            display
         when 2
             update_movie_title
             display
         when 3
             delete_movie
-
-
+            display
+        when 4
+            display
+        else
+            puts "Error: invalid input"
         end
     end
-    ################# Edit Movies #################
+    
     def add_movie
         puts "Type movie title: "
         new_title = get_user_input
@@ -190,8 +195,13 @@ class CommandLineInterface
         new_genre = get_user_input
         puts "Type movie director: "
         new_director = get_user_input
-        Movie.create(title: new_title, genre: new_genre, director: new_director)
-        puts "Movie title: #{Movie.last.title} , Genre: #{Movie.last.genre} , Director: #{Movie.last.director}.
+        puts "Actor name: "
+        new_actor_name = get_user_input
+        puts "Actor age:"
+        new_actor_age = get_user_input
+
+        Movie.create(title: new_title, genre: new_genre, director: new_director).actors.create(name:  new_actor_name, age: new_actor_age)
+        puts "Movie title: #{Movie.last.title} , Genre: #{Movie.last.genre} , Director: #{Movie.last.director} Actor name: #{Actor.last.name} , Actor age: #{Actor.last.age}.
         ************** Done **************"
 
     end
@@ -209,8 +219,10 @@ class CommandLineInterface
     def delete_movie
         puts "Type movie title to delete"
         movie_to_delete = get_user_input
-        delete_movie = Movie.find_movie(movie_to_delete)
-        delete_movie.destroy
+        current_movie = Movie.find_movie(movie_to_delete)
+        old_movie = current_movie.title
+        current_movie.destroy
+        puts "#{old_movie} is deleted "
     end
    
 
