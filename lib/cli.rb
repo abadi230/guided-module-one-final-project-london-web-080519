@@ -8,7 +8,7 @@ class CommandLineInterface
     def display 
         puts '
         type a number from this options
-        1 Browse All Movies     2 Search     3 Exit'
+        1 Browse All Movies     2 Search     3 Edit     4 Exit'
         
         # display all "movies whit thier actors "
         get_input
@@ -25,7 +25,7 @@ class CommandLineInterface
         when 2
             search
         when 3
-            update_movie# edit :  add_movie(), update(), delete() , delete_all() 
+            edit# edit :  add_movie(), update(), delete() , delete_all() 
         when 4
             goodbye
        
@@ -51,7 +51,7 @@ class CommandLineInterface
         5 Search by Character name
         6 Back 
         7 Exit'
-        input = gets.chomp
+        input = get_user_input
         case input.to_i
         when 1
             puts 'Enter movie title'
@@ -95,8 +95,8 @@ class CommandLineInterface
     def find_by_title(movie_title)
         current_movie = Movie.find_movie(movie_title)
         if current_movie    # if exist
-            current_movie.title # print movie title
-            current_movie.movie_actors # print movie actors from movie_actors class method
+            puts current_movie.title # puts movie title
+            current_movie.movie_actors # puts movie actors from movie_actors class method
         else
             puts "Invalid input"
         end
@@ -164,18 +164,53 @@ class CommandLineInterface
 
     # Edit 
     def edit
-        # 1 movie 2 actor 3 role 
-        
+        # 1 movie 2 actor 3 role
+        puts "select the apropriate number
+        1 Add movie
+        2 Update movie title
+        3 delete movie" 
+        input = get_user_input
+        case input.to_i
+        when 1 
+            add_movie
+        when 2
+            update_movie_title
+            display
+        when 3
+            delete_movie
+
+
+        end
     end
     ################# Edit Movies #################
     def add_movie
-        
+        puts "Type movie title: "
+        new_title = get_user_input
+        puts "Type movie genre: "
+        new_genre = get_user_input
+        puts "Type movie director: "
+        new_director = get_user_input
+        Movie.create(title: new_title, genre: new_genre, director: new_director)
+        puts "Movie title: #{Movie.last.title} , Genre: #{Movie.last.genre} , Director: #{Movie.last.director}.
+        ************** Done **************"
+
     end
-    def update_movie
-        current_movie = Movie.find_by(title: get_user_input)
-        current_movie.update(title: get_user_input)
+    def update_movie_title
+        puts "Type old movie title: "
+        old_title = get_user_input
+        puts "Type a new title: "
+        new_title = get_user_input
+            
+        current_movie = Movie.find_movie(old_title)
+        current_movie.update(title: new_title)
+        puts "Movie title is updated"
     end
+    
     def delete_movie
+        puts "Type movie title to delete"
+        movie_to_delete = get_user_input
+        delete_movie = Movie.find_movie(movie_to_delete)
+        delete_movie.destroy
     end
    
 

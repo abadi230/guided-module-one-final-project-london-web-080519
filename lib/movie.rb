@@ -27,7 +27,7 @@ class Movie < ActiveRecord::Base
     end
 
     def self.find_movie(title)
-        self.all.find{|movie| movie.title == title}
+        self.all.find{|movie| movie.title.downcase.include?(title.downcase)}
     end
 
     def self.find_genre(genre)
