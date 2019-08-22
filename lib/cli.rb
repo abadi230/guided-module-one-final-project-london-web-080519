@@ -13,13 +13,27 @@ class CommandLineInterface
         # display all "movies whit thier actors "
         get_input
     end
+
+    def browse_all  
+        # all movies withe their actors add character 
+        Movie.all.map do |movie|
+            # iterate movies, create new array and print title, genre, director
+            puts "Title: #{movie.title} , Genre: #{movie.genre} , Director: #{movie.director}."
+            # then print the actors for each movie 
+            puts "Actors:"
+            puts movie.movie_actors
+            puts "Roles:"
+            puts movie.movie_roles
+            puts "---------------------"
+        end
+    end
     # sepret this method : get_user_input , main
     def get_input
         input = gets.chomp
         case input.to_i
         when 1
             # puts Movie.all_titles
-            Movie.browse_all
+            browse_all
             display
             
         when 2
@@ -200,9 +214,10 @@ class CommandLineInterface
         puts "Actor role"
         new_actor_role = get_user_input
 
-        Movie.create(title: new_title, genre: new_genre, director: new_director).actors.create(name:  new_actor_name, age: new_actor_age)
+        Movie.create(title: new_title, genre: new_genre, director: new_director).actors.create(name:  new_actor_name)
+        Role.last.update(name: new_actor_role)
         puts "Movie title: #{Movie.last.title} , Genre: #{Movie.last.genre} , Director: #{Movie.last.director} 
-        Actor name: #{Actor.last.name} , #{Role.last.name}.
+        Actor name: #{Actor.last.name} , Actor role: #{Role.last.name}.
         ************** Done **************"
     end
 
@@ -237,10 +252,12 @@ class CommandLineInterface
     end
 
     def search_agine
-        puts "Do you want to searsh again? 
+        puts "Do you want to search again? 
                 Enter y or n"
         input = get_user_input
         input == "y" ? search : display
+        # @@prompt.yes?('Do you want to search again?')
+
     end
 
 

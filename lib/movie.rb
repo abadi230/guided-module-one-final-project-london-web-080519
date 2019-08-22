@@ -13,18 +13,6 @@ class Movie < ActiveRecord::Base
         self.roles.map{|role| role.name}
     end
     #specific query 
-    def self.browse_all  
-        # all movies withe their actors                #add character 
-        self.all.map do |movie|
-            # iterate movies, create new array and print title, genre, director
-            puts "Title: #{movie.title} , Genre: #{movie.genre} , Director: #{movie.director}."
-            # then print the actors for each movie 
-            puts "Actors:"
-            puts movie.movie_actors
-            puts "Roles:"
-            puts movie.movie_roles
-        end
-    end
 
     def self.all_titles
         self.all.map{|movie| movie.title }
