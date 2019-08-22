@@ -4,7 +4,9 @@ class Actor < ActiveRecord::Base
     
     def actor_movies 
         # all actors belong to this movie 
-        self.movies.each{|movie| puts "Movie Title: #{movie.title} , Genre: #{movie.genre} , Derector: #{movie.director}."}
+        # self.movies.each{|movie| puts "Movie Title: #{movie.title} , Genre: #{movie.genre} , Derector: #{movie.director}."}
+        self.movies.map {|movie| movie.title}
+           
     end
 
     def self.all_names

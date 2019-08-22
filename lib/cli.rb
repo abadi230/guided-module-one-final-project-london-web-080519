@@ -21,7 +21,7 @@ class CommandLineInterface
             # puts Movie.all_titles
             Movie.browse_all
             display
-            get_input
+            
         when 2
             search
         when 3
@@ -39,8 +39,11 @@ class CommandLineInterface
     end
 
     def movie_with_most_actors
-        corrent_movie = Movie.all.max_by{|movie| movie.actors.count}
-        show_movie_details(corrent_movie)
+        current_movie = Movie.most_actors
+        show_movie_details(current_movie)
+        # binding.pry
+        puts "Actors: "
+        puts current_movie.movie_actors
     end
     
     ################# Search #################
@@ -98,7 +101,7 @@ class CommandLineInterface
         current_movie = Movie.find_movie(movie_title)
         if current_movie    # if exist
             show_movie_details(current_movie)
-            current_movie.movie_actors # puts movie actors from movie_actors class method
+            puts current_movie.movie_actors # puts movie actors from movie_actors class method
         else
             puts "Invalid input"
         end
@@ -111,7 +114,8 @@ class CommandLineInterface
         if current_actor
             # puts "Actor name #{current_actor.name} , Actor age: #{current_actor.age}." 
             shwo_actor_details(current_actor)
-            current_actor.actor_movies
+            puts "Movie Title: "
+            puts current_actor.actor_movies
         else
             invalid_message
         end
@@ -139,7 +143,7 @@ class CommandLineInterface
     ################# details #################
     def show_movie_details(movies)
         if movies.kind_of?(Array)
-        # take array as argument
+        
             movies.each{|movie| puts "Title: #{movie.title}, Directors: #{movie.director} Genre: #{movie.genre}." }
         else
             puts "Title: #{movies.title}, Directors: #{movies.director} Genre: #{movies.genre}."
@@ -155,17 +159,17 @@ class CommandLineInterface
     end
 
     def show_role_details(role)
-         puts "Actor name: #{role.actor.name} , Role name: #{role.name}.
-        Movie title: #{role.movie.title} , Genre: #{role.movie.genre} , Director: #{role.movie.director}."
+         puts "Actor name: #{role.role_actor} , Role name: #{role.name}.
+        Movie title: #{role.role_movie} , Genre: #{role.movie.genre} , Director: #{role.movie.director}."
     end
 
     ################# Edit Movies ################# 
     def edit
-        # 1 movie 2 actor 3 role
         puts "select the apropriate number
         1 Add movie
         2 Update movie title
-        3 delete movie" 
+        3 delete movie
+        4 Home" 
         input = get_user_input
         case input.to_i
         when 1 
@@ -193,14 +197,15 @@ class CommandLineInterface
         new_director = get_user_input
         puts "Actor name: "
         new_actor_name = get_user_input
-        puts "Actor age:"
-        new_actor_age = get_user_input
+        puts "Actor role"
+        new_actor_role = get_user_input
 
         Movie.create(title: new_title, genre: new_genre, director: new_director).actors.create(name:  new_actor_name, age: new_actor_age)
-        puts "Movie title: #{Movie.last.title} , Genre: #{Movie.last.genre} , Director: #{Movie.last.director} Actor name: #{Actor.last.name} , Actor age: #{Actor.last.age}.
+        puts "Movie title: #{Movie.last.title} , Genre: #{Movie.last.genre} , Director: #{Movie.last.director} 
+        Actor name: #{Actor.last.name} , #{Role.last.name}.
         ************** Done **************"
-
     end
+
     def update_movie_title
         puts "Type old movie title: "
         old_title = get_user_input
@@ -234,8 +239,8 @@ class CommandLineInterface
     def search_agine
         puts "Do you want to searsh again? 
                 Enter y or n"
-        input = gets.chomp
-        input == "y" ? search : goodby_massage
+        input = get_user_input
+        input == "y" ? search : display
     end
 
 

@@ -4,12 +4,13 @@ class Movie < ActiveRecord::Base
     
     def movie_actors 
         # all actors belong to this movie 
-        self.actors.each{|actor| puts "Actor name: #{actor.name} , Actor age: #{actor.age}."}
+        # self.actors.each{|actor| puts "Actor name: #{actor.name} , Actor age: #{actor.age}."}
+        self.actors.map{|actor| actor.name}
     end
     
     def movie_roles
         # all roles belong to this movie
-        self.roles.each{|role| puts "Role: #{role.name}"}
+        self.roles.map{|role| role.name}
     end
     #specific query 
     def self.browse_all  
@@ -18,8 +19,10 @@ class Movie < ActiveRecord::Base
             # iterate movies, create new array and print title, genre, director
             puts "Title: #{movie.title} , Genre: #{movie.genre} , Director: #{movie.director}."
             # then print the actors for each movie 
-            movie.movie_actors
-            # movie.movie_roles
+            puts "Actors:"
+            puts movie.movie_actors
+            puts "Roles:"
+            puts movie.movie_roles
         end
     end
 
@@ -40,7 +43,8 @@ class Movie < ActiveRecord::Base
         self.all.find{|movie| movie.director.downcase.include?(director.downcase)}
     end
 
-    
-
-    
+    def self.most_actors
+        Movie.all.max_by{|movie| movie.actors.count}
+    end
+     
 end
