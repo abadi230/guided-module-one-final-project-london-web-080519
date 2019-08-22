@@ -8,7 +8,7 @@ class CommandLineInterface
     def display 
         puts '
         type a number from this options
-        1 Browse All Movies     2 Search     3 Edit     4 Movie whit most actors    5 Exit'
+        1 Browse All Movies     2 Search     3 Edit     4 Movie with most actors    5 Exit'
         
         # display all "movies whit thier actors "
         get_input
@@ -16,16 +16,20 @@ class CommandLineInterface
 
     def browse_all  
         # all movies withe their actors add character 
-        Movie.all.map do |movie|
-            # iterate movies, create new array and print title, genre, director
-            puts "Title: #{movie.title} , Genre: #{movie.genre} , Director: #{movie.director}."
-            # then print the actors for each movie 
-            puts "Actors:"
-            puts movie.movie_actors
-            puts "Roles:"
-            puts movie.movie_roles
-            puts "---------------------"
-        end
+        # Movie.all.map do |movie|
+        #     # iterate movies, create new array and print title, genre, director
+        #     puts "Title: #{movie.title} , Genre: #{movie.genre} , Director: #{movie.director}."
+        #     # then print the actors for each movie 
+        #     puts "Actors:"
+        #     puts movie.movie_actors
+        #     puts "Roles:"
+        #     puts movie.movie_roles
+        #     puts "---------------------"
+        # end
+
+        # Movie.all.each{|movie| puts movie.movies_with_actors_roles}
+
+        puts Movie.all_information
     end
     # sepret this method : get_user_input , main
     def get_input
@@ -39,7 +43,7 @@ class CommandLineInterface
         when 2
             search
         when 3
-            edit# edit :  add_movie(), update(), delete() , delete_all() 
+            edit# add_movie(), update(), delete() , delete_all() 
         when 4
             movie_with_most_actors
             display
@@ -179,7 +183,7 @@ class CommandLineInterface
 
     ################# Edit Movies ################# 
     def edit
-        puts "select the apropriate number
+        puts "select the appropriate number
         1 Add movie
         2 Update movie title
         3 delete movie
@@ -228,17 +232,27 @@ class CommandLineInterface
         new_title = get_user_input
             
         current_movie = Movie.find_movie(old_title)
-        current_movie.update(title: new_title)
-        puts "Movie title is updated"
+        if current_movie  
+            current_movie.update(title: new_title) 
+            puts "Movie title is updated"
+        else 
+            puts "This movie is not exist "
+            edit
+        end
     end
     
     def delete_movie
         puts "Type movie title to delete"
         movie_to_delete = get_user_input
         current_movie = Movie.find_movie(movie_to_delete)
-        old_movie = current_movie.title
-        current_movie.destroy
-        puts "#{old_movie} is deleted "
+        if current_movie
+            old_movie = current_movie.title
+            current_movie.destroy
+            puts "#{old_movie} is deleted "
+        else
+            puts "This movie is not exist "
+            edit
+        end
     end
    
     ################# tools #################
