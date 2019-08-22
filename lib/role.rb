@@ -8,6 +8,7 @@ class Role < ActiveRecord::Base
     end
 
     def self.find_role(name)
+        # self.all.find{|role| role.name.downcase.include?(name.downcase)}
         self.all.find{|role| role.name == name}
     end
 

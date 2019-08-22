@@ -36,6 +36,10 @@ class Movie < ActiveRecord::Base
         self.all.select{|movie| movie.genre.downcase.include?(genre.downcase)}
     end
 
+    def self.fine_director(director)
+        self.all.find{|movie| movie.director.downcase.include?(director.downcase)}
+    end
+
     
 
     
