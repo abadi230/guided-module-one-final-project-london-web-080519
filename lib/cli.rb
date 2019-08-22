@@ -11,54 +11,37 @@ class CommandLineInterface
         1 Browse All Movies     2 Search     3 Edit     4 Movie with most actors    5 Exit'
         
         # display all "movies whit thier actors "
-        get_input
+        main_input
     end
+   
+    def main_input
 
-    def browse_all  
-        # all movies withe their actors add character 
-        # Movie.all.map do |movie|
-        #     # iterate movies, create new array and print title, genre, director
-        #     puts "Title: #{movie.title} , Genre: #{movie.genre} , Director: #{movie.director}."
-        #     # then print the actors for each movie 
-        #     puts "Actors:"
-        #     puts movie.movie_actors
-        #     puts "Roles:"
-        #     puts movie.movie_roles
-        #     puts "---------------------"
-        # end
-
-        # Movie.all.each{|movie| puts movie.movies_with_actors_roles}
-
-        puts Movie.all_information
-    end
-    # sepret this method : get_user_input , main
-    def get_input
-        input = gets.chomp
+        input = get_user_input
         case input.to_i
         when 1
-            # puts Movie.all_titles
-            browse_all
+                    # all movies with their information
+            puts Movie.all_information
             display
             
         when 2
             search
         when 3
-            edit# add_movie(), update(), delete() , delete_all() 
+            edit    # add_movie, update, delete 
         when 4
             movie_with_most_actors
             display
         when 5
             goodby_massage
         else
-            puts "Error: invalid input"
-            get_input
+            invalid_message
+            main_input
         end
 
     end
 
     def movie_with_most_actors
         current_movie = Movie.most_actors
-        show_movie_details(current_movie)
+        puts Movie.movie_details(current_movie)
         # binding.pry
         puts "Actors: "
         puts current_movie.movie_actors
@@ -118,7 +101,8 @@ class CommandLineInterface
     def find_by_title(movie_title)
         current_movie = Movie.find_movie(movie_title)
         if current_movie    # if exist
-            show_movie_details(current_movie)
+            # show_movie_details(current_movie)
+            puts Movie.movie_details(current_movie)
             puts current_movie.movie_actors # puts movie actors from movie_actors class method
         else
             puts "Invalid input"
@@ -132,7 +116,6 @@ class CommandLineInterface
         if current_actor
             # puts "Actor name #{current_actor.name} , Actor age: #{current_actor.age}." 
             shwo_actor_details(current_actor)
-            puts "Movie Title: "
             puts current_actor.actor_movies
         else
             invalid_message
@@ -142,12 +125,21 @@ class CommandLineInterface
   
     def find_by_genre(movie_genre)
         current_movies = Movie.find_genre(movie_genre)
-        current_movies ? show_movie_details(current_movies) : invalid_message
+        # current_movies ? show_movie_details(current_movies) : invalid_message
+        if current_movies  
+            puts Movie.movie_details(current_movies)
+        else 
+            invalid_message
+        end
     end
 
     def find_by_director(movie_director)
         current_movie = Movie.fine_director(movie_director)
-        current_movie ? show_movie_details(current_movie) : invalid_message
+        if current_movie 
+            puts Movie.movie_details(current_movie)
+        else 
+            invalid_message
+        end
     end
 
     def find_by_role(role_name)
@@ -159,14 +151,14 @@ class CommandLineInterface
     
 
     ################# details #################
-    def show_movie_details(movies)
-        if movies.kind_of?(Array)
+    # def show_movie_details(movies)
+    #     if movies.kind_of?(Array)
         
-            movies.each{|movie| puts "Title: #{movie.title}, Directors: #{movie.director} Genre: #{movie.genre}." }
-        else
-            puts "Title: #{movies.title}, Directors: #{movies.director} Genre: #{movies.genre}."
-        end
-    end
+    #         movies.each{|movie| puts "Title: #{movie.title}, Directors: #{movie.director} Genre: #{movie.genre}." }
+    #     else
+    #         puts "Title: #{movies.title}, Directors: #{movies.director} Genre: #{movies.genre}."
+    #     end
+    # end
 
     def shwo_actor_details(actors)
         if actors.kind_of?(Array) 
@@ -277,5 +269,11 @@ class CommandLineInterface
 
     def goodby_massage
         puts "Thankyou, goodby!"
+    end
+
+    def run
+        # run this project
+        greet
+        display
     end
 end
