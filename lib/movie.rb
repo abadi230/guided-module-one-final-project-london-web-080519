@@ -6,10 +6,10 @@ class Movie < ActiveRecord::Base
         current_movie = []
         if movie.kind_of?(Array)
             self.all.each do |movie|
-                current_movie << "Title: #{movie.title}, Directors: #{movie.director} Genre: #{movie.genre}." 
+                current_movie << "Title: #{movie.title}, Director: #{movie.director}, Genre: #{movie.genre}." 
             end
         else
-            current_movie << "Title: #{movie.title}, Directors: #{movie.director} Genre: #{movie.genre}." 
+            current_movie << "Title: #{movie.title}, Directors: #{movie.director}, Genre: #{movie.genre}." 
         end
 
         current_movie
@@ -17,9 +17,9 @@ class Movie < ActiveRecord::Base
 
     def movie_actors 
         # all actors belong to this movie 
-        # self.actors.map{|actor| actor.name}
         actors_name = []
-        self.actors.map{|actor| actors_name << "Actor name: #{actor.name}"}
+        # self.actors.map{|actor| actors_name << "Actor name: #{actor.name}"}
+        self.actors.map{|actor| actors_name << actor.name}
         actors_name
     end
     
@@ -38,6 +38,9 @@ class Movie < ActiveRecord::Base
     def self.find_genre(genre)
         # converts movie.genre and input to downcase. return the matches 
         self.all.select{|movie| movie.genre.downcase.include?(genre.downcase)}
+        # current_movie =[]
+        # self.all.select{|movie| current_movie << movie.genre.downcase.include?(genre.downcase)}
+        # current_movie
     end
 
     def self.fine_director(director)

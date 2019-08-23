@@ -39,6 +39,18 @@ class CommandLineInterface
 
     end
 
+    def get_user_input
+        input = gets.chomp
+    end
+
+    def invalid_message
+        puts "Invalid input"
+    end
+    
+    def goodby_massage
+        puts "Thankyou, goodby!"
+    end
+
     def movie_with_most_actors
         current_movie = Movie.most_actors
         puts Movie.movie_details(current_movie)
@@ -68,8 +80,6 @@ class CommandLineInterface
             puts 'Enter Actor Name'
             find_by_actor(get_user_input)
             
-            # result = Role.find_actor_name(get_user_input)
-            # puts "Actor name: #{result.actor.name}, Age: #{result.actor.age}, Movie Title: #{result.movie.title}."
             search_agine
         when 3
             puts 'Enter Genre'
@@ -103,6 +113,7 @@ class CommandLineInterface
         if current_movie    # if exist
             # show_movie_details(current_movie)
             puts Movie.movie_details(current_movie)
+            puts "Actors:"
             puts current_movie.movie_actors # puts movie actors from movie_actors class method
         else
             puts "Invalid input"
@@ -114,9 +125,8 @@ class CommandLineInterface
     def find_by_actor(actor_name)
         current_actor = Actor.find_actor(actor_name)
         if current_actor
-            # puts "Actor name #{current_actor.name} , Actor age: #{current_actor.age}." 
             shwo_actor_details(current_actor)
-            puts current_actor.actor_movies
+            # puts current_actor.actor_movies
         else
             invalid_message
         end
@@ -125,12 +135,7 @@ class CommandLineInterface
   
     def find_by_genre(movie_genre)
         current_movies = Movie.find_genre(movie_genre)
-        # current_movies ? show_movie_details(current_movies) : invalid_message
-        if current_movies  
-            puts Movie.movie_details(current_movies)
-        else 
-            invalid_message
-        end
+        current_movies ? show_movie_details(current_movies) : invalid_message
     end
 
     def find_by_director(movie_director)
@@ -151,18 +156,18 @@ class CommandLineInterface
     
 
     ################# details #################
-    # def show_movie_details(movies)
-    #     if movies.kind_of?(Array)
+    def show_movie_details(movies)
+        if movies.kind_of?(Array)
         
-    #         movies.each{|movie| puts "Title: #{movie.title}, Directors: #{movie.director} Genre: #{movie.genre}." }
-    #     else
-    #         puts "Title: #{movies.title}, Directors: #{movies.director} Genre: #{movies.genre}."
-    #     end
-    # end
+            movies.each{|movie| puts "Title: #{movie.title}, Directors: #{movie.director} Genre: #{movie.genre}." }
+        else
+            puts "Title: #{movies.title}, Directors: #{movies.director} Genre: #{movies.genre}."
+        end
+    end
 
     def shwo_actor_details(actors)
         if actors.kind_of?(Array) 
-            actors.each{ |actor| puts "Actor name: #{actor.name} , Actor age: #{actor.age}" } 
+            actors.each{ |actor| puts "Actor name: #{actor.name} , Actor age: #{actor.age} , Movie title: #{actor.actor_movies} " } 
         else 
             puts "Actor name: #{actors.name} , Actor age: #{actors.age}"
         end
@@ -171,6 +176,15 @@ class CommandLineInterface
     def show_role_details(role)
          puts "Actor name: #{role.role_actor} , Role name: #{role.name}.
         Movie title: #{role.role_movie} , Genre: #{role.movie.genre} , Director: #{role.movie.director}."
+    end
+
+    def search_agine
+        puts "Do you want to search again? 
+                Enter y or n"
+        input = get_user_input
+        input == "y" ? search : display
+        # @@prompt.yes?('Do you want to search again?')
+
     end
 
     ################# Edit Movies ################# 
@@ -247,29 +261,8 @@ class CommandLineInterface
         end
     end
    
-    ################# tools #################
 
-    def get_user_input
-        input = gets.chomp
-    end
-
-    def invalid_message
-        puts "Invalid input"
-    end
-
-    def search_agine
-        puts "Do you want to search again? 
-                Enter y or n"
-        input = get_user_input
-        input == "y" ? search : display
-        # @@prompt.yes?('Do you want to search again?')
-
-    end
-
-
-    def goodby_massage
-        puts "Thankyou, goodby!"
-    end
+    ################# start #################
 
     def run
         # run this project

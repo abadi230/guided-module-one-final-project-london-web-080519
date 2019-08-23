@@ -9,7 +9,8 @@ class Actor < ActiveRecord::Base
     end
 
     def self.find_actor(name)
-        self.all.find{|actor| actor.name.downcase.include?(name.downcase)}
+        # self.all.find{|actor| actor.name.downcase.include?(name.downcase)}
+        self.all.select{|actor| actor.name.downcase.include?(name.downcase)}
     end
 
 end
